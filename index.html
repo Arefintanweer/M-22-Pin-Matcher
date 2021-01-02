@@ -12,13 +12,13 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="pin-generator half-width">
-                    <input class="form-control" type="text">
-                    <button class="generate-btn">Generate Pin</button>
+                    <input id="generator-result" class="form-control" type="text">
+                    <button id="generate-btn" class="generate-btn">Generate Pin</button>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="input-section half-width">
-                    <input class="form-control" type="text">
+                    <input id="screen" class="form-control" type="text">
                     <div class="numbers">
                         <div class="calc-body">
                             <div class="calc-button-row">
@@ -42,7 +42,7 @@
                                 <div class="button">C</div>
                             </div>
                             <div>
-                                <button type="submit" class="submit-btn">Submit</button>
+                                <button id="submit" type="submit" class="submit-btn">Submit</button>
                                 <p class="action-left">3 try left</p>
                             </div>
                     </div>
@@ -50,9 +50,57 @@
             </div>
         </div>
         <div class="notify-section">
-            <p class="notify">❌ Pin Didn't Match, Please try again</p>
-            <p class="notify">✅ Pin Matched... Secret door is opening for you</p>
+            <p class="notify" id="pin-not-matched">❌ Pin Didn't Match, Please try again</p>
+            <p class="notify" id="pin-matched">✅ Pin Matched... Secret door is opening for you</p>
         </div>
     </div>
+
+    <script>
+        //generate pin
+        document.getElementById("generate-btn").addEventListener('click', function(){
+            
+            var randomNumber = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById("generator-result").value = parseFloat(randomNumber);
+        })
+        //num-pad
+        let screen = document.getElementById("screen");
+
+        const buttons = document.getElementsByClassName("button");
+
+        let screenValue = '';
+
+        for(item of buttons){
+            item.addEventListener("click", (e)=>{
+            let buttonText = e.target.innerText;
+
+            if(buttonText == 'C'){
+                screenValue ='';
+                screen.value = screenValue;
+            }
+            else if(buttonText == '<'){
+                screenValue = screenValue.slice(0, -1);
+                screen.value = screenValue;
+            }
+            else{
+                screenValue += buttonText;
+                screen.value = screenValue;
+            }  
+        })
+    }
+    document.getElementById("submit").addEventListener("click", function(){
+        var generatorValue = document.getElementById("generator-result").value;
+        console.log(generatorValue);
+        var numpadValue = document.getElementById("screen").value;
+        console.log(numpadValue);
+        if(generatorValue == numpadValue){
+            document.getElementById("pin-matched").style.display = "block";   
+        }
+        else{
+            document.getElementById("pin-not-matched").style.display = "block";
+        }
+             
+    })
+
+    </script>
 </body>
 </html>
